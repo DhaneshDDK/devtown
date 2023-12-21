@@ -36,7 +36,7 @@ function App() {
     
       try { 
          const res = await verifyUserToken(token);
-        //  console.log(res.data.data)
+         // console.log(res.data)
          if(res?.data?.success) dispatch(setUserData(res?.data?.data));
       } catch (error) {
          console.log(error);

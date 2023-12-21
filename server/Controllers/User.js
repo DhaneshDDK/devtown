@@ -136,10 +136,14 @@ exports.verifyUser = async (req,res)=>{
      //verify token
      try {
         const decode = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log(decode);
+        const email = decode.email;
+        const response = await user.findOne({email}).populate({
+            path : "products"
+        });
+        // console.log(email)
         res.status(200).json({
             success: true,
-            data : decode
+            data : response
         })
    //  console.log(req.user);
     } catch (error) {
