@@ -77,7 +77,7 @@ const Product = ({product}) => {
 
 
      {
-          cart.some((p) => p.name === product.name) ?
+          (cart.some((p) => p.name === product.name) && user) ?
           (<button
           className="text-gray-700 border-2 border-gray-700 rounded-full font-semibold 
           text-[12px] p-1 px-3 uppercase 
