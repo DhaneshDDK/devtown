@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { setUserData } from './Redux/Slices/userSlice';
 import { verifyUserToken } from './Services/Operations/User';
 import Cart from './Pages/Cart';
+import Orders from './Pages/Orders';
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
          <Route path="/login" element= {<LoginPage/>}/>
          <Route path="/signup" element= {<SingUpPage/> }/>
          <Route path="/cart" element= {<Cart/>}/>
+         <Route path="/myproducts" element= {<Orders/>}/>
       </Routes>
     </div>
   );
