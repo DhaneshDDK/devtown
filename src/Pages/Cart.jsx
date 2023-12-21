@@ -15,7 +15,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(user);
+  // console.log(user);
   const checkOutHandler = async ()=>{
     try {
         const res = await initPayment(cart,totalPrice, user ,navigate, dispatch, token);

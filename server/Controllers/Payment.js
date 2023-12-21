@@ -12,6 +12,7 @@ var instance = new Razorpay({
 exports.initiatePayment = async (req,res)=>{
     try {
          const {amount} = req.body;
+        //  console.log(amount)
          var options = {
             amount : amount*100,
             currency : "INR",
@@ -33,13 +34,12 @@ exports.initiatePayment = async (req,res)=>{
 exports.verifyPayment = async (req,res)=>{
     try {
         const {razorpay_payment_id, razorpay_order_id, razorpay_signature, name, email, _id, cart} = req.body;
-        // console.log(razorpay_payment_id,razorpay_order_id,razorpay_signature,name,email, _id,cart);
         if(!razorpay_order_id ||
             !razorpay_payment_id ||
             !razorpay_signature || !cart) {
                 return res.status(200).json({success:false, message:"Payment Failed"});
         }
-    
+
         const body = razorpay_order_id + "|" + razorpay_payment_id;
         const generated_signature = crypto
         .createHmac("sha256", process.env.RAZORPAY_SECRET)
@@ -48,33 +48,38 @@ exports.verifyPayment = async (req,res)=>{
 
        if (generated_signature == razorpay_signature) {
             console.log("generated signature");
-            
-           await cart.forEach(async (item)=>{
-                await user.findOneAndUpdate({email : email}, 
-                    {
-                        $push : {
-                            products :item._id
-                        }
-                    }
-                    );
+
+
+           cart.forEach(async (item)=>{
                 await product.findOneAndUpdate({ _id : item._id}, {
                     $push : {
                         customers : _id
                     }
-                })    
+                },
+                { new: true })    
             });
 
-            const updatedUser = await user.findOne({email : email}).populate({
+            const updatedUser = await user.findOneAndUpdate({email : email},
+                {
+                    $push : {
+                        products : { $each : cart.map(item => item._id) }
+                    }
+                }
+                ,
+                { new: true }
+                ).populate({
                 path : "products"
             }).exec();
-            
+         
             return res.status(200).json({
                 success:true, message:"Payment Verified", data : updatedUser
             });
             
        }
+        else {
+       console.log("failed")
        return res.status(200).json({success:"false", message:"Payment Failed"});
-
+        }
     } catch (error) {
         res.json({
             success : false,

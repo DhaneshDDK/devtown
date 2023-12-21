@@ -60,9 +60,9 @@ const verifyPayment = async (bodyData, navigate, dispatch) => {
         
         toast.success("Payment Successful");
         dispatch(resetCart());
-        // console.log(response?.data?.data)
+        console.log(response?.data?.data);
         dispatch(setUserData(response?.data?.data));
-        navigate("/");
+        // navigate("/");
 
     } catch (error) {
         console.log("PAYMENT VERIFY ERROR....", error);
