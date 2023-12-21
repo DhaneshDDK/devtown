@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api/v1";
+const BASE_URL = "https://devtown-3ou2.onrender.com/api/v1";
 
 export const productEndpoints = {
     FETCH_ALL_PRODUCTS : BASE_URL + '/products/getAllProducts',
